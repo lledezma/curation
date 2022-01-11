@@ -308,6 +308,11 @@ class ValidationMainTest(TestCase):
                 f"HTTP error: {http_error_string}")
             self.assertIn(expected_call, mock_logging_error.mock_calls)
 
+    @mock.patch(
+        'utils.bq.get_client',
+        mock.MagicMock(query=lambda: mock.MagicMock(result=lambda: None)))
+    @mock.patch('validation.participants.validate.fetch_and_store_ps_hpo_data',
+                mock.MagicMock())
     @mock.patch('bq_utils.table_exists', mock.MagicMock())
     @mock.patch('bq_utils.query')
     @mock.patch('validation.main.is_valid_folder_prefix_name')
@@ -524,6 +529,11 @@ class ValidationMainTest(TestCase):
                           unexpected_calls,
                           any_order=True)
 
+    @mock.patch(
+        'utils.bq.get_client',
+        mock.MagicMock(query=lambda: mock.MagicMock(result=lambda: None)))
+    @mock.patch('validation.participants.validate.fetch_and_store_ps_hpo_data',
+                mock.MagicMock())
     @mock.patch('bq_utils.table_exists', mock.MagicMock())
     @mock.patch('bq_utils.query', mock.MagicMock())
     def test_generate_metrics(self):

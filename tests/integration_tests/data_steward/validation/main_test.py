@@ -276,6 +276,8 @@ class ValidationMainTest(unittest.TestCase):
                                      self.folder_prefix)
         self.assertSetEqual(set(expected_results), set(r['results']))
 
+    @mock.patch(
+        'validation.participants.validate.setup_and_validate_participants')
     @mock.patch('validation.main.updated_datetime_object')
     @mock.patch('validation.main._has_all_required_files')
     @mock.patch('validation.main.all_required_files_loaded')
@@ -284,7 +286,8 @@ class ValidationMainTest(unittest.TestCase):
     def test_html_report_five_person(self, mock_check_cron, mock_first_run,
                                      mock_required_files_loaded,
                                      mock_has_all_required_files,
-                                     mock_updated_datetime_object):
+                                     mock_updated_datetime_object,
+                                     mock_setup_validate_participants):
         mock_required_files_loaded.return_value = False
         mock_first_run.return_value = False
         mock_has_all_required_files.return_value = True

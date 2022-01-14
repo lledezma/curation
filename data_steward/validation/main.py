@@ -69,7 +69,8 @@ def save_datasources_json(datasource_id=None,
         bucket assigned to hpo_id.
     :return:
     """
-    storage_client = StorageClient()
+    project_id = app_identity.get_application_id()
+    storage_client = StorageClient(project_id)
     if datasource_id is None:
         if target_bucket is None:
             raise RuntimeError(
@@ -100,7 +101,8 @@ def run_export(datasource_id=None, folder_prefix="", target_bucket=None):
     :param target_bucket: Bucket to save report. If None, use bucket associated with hpo_id.
     """
     results = []
-    storage_client = StorageClient()
+    project_id = app_identity.get_application_id()
+    storage_client = StorageClient(project_id)
     # Using separate var rather than hpo_id here because hpo_id None needed in calls below
     if datasource_id is None and target_bucket is None:
         raise RuntimeError(
@@ -948,7 +950,8 @@ def upload_string_to_gcs(bucket, name, string):
     f = StringIO()
     f.write(string)
     f.seek(0)
-    storage_client = StorageClient()
+    project_id = app_identity.get_application_id()
+    storage_client = StorageClient(project_id)
     bucket = storage_client.get_bucket(bucket)
     blob = bucket.blob(name)
     blob.upload_from_file(f)

@@ -80,7 +80,7 @@ def save_datasources_json(datasource_id=None,
         if target_bucket is None:
             target_bucket: Bucket = storage_client.get_hpo_bucket(datasource_id)
         else:
-            target_bucket: Bucket = storage_client.get_bucket(target_bucket)
+            target_bucket: Bucket = storage_client.bucket(target_bucket)
 
     datasource = dict(name=datasource_id, folder=datasource_id, cdmVersion=5)
     datasources = dict(datasources=[datasource])
@@ -111,7 +111,7 @@ def run_export(datasource_id=None, folder_prefix="", target_bucket=None):
         if target_bucket is None:
             target_bucket: Bucket = storage_client.get_hpo_bucket(datasource_id)
         else:
-            target_bucket: Bucket = storage_client.get_bucket(target_bucket)
+            target_bucket: Bucket = storage_client.bucket(target_bucket)
 
     logging.info(
         f"Exporting {datasource_id} report to bucket {target_bucket.name}")
@@ -952,7 +952,7 @@ def upload_string_to_gcs(bucket, name, string):
     f.seek(0)
     project_id = app_identity.get_application_id()
     storage_client = StorageClient(project_id)
-    bucket = storage_client.get_bucket(bucket)
+    bucket = storage_client.bucket(bucket)
     blob = bucket.blob(name)
     blob.upload_from_file(f)
     result = storage_client.get_blob_metadata(blob)
